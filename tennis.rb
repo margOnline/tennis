@@ -35,6 +35,8 @@ class Match
 	def initialize(server)
     @server = server
 		@game_over = @set_over = @match_over = false
+		puts "Let the match begin!"
+		puts "#{@server.fullname} to serve first."
 	end
 	
 	def play(player1, player2)
@@ -117,6 +119,8 @@ def play_point(player1, player2)
 
 	def game_over(player1,player2,point_winning_player)
 		@game_over = true
+		#swap who is serving at the end of each game
+		@server = @server == player1 ? player2 : player1
 		player1.points = player2.points = 0
 		@point_winning_player.games += 1
 		determine_next_step(player1,player2,point_winning_player)
@@ -181,16 +185,18 @@ def play_point(player1, player2)
 	end 
 	
 	def prompt(player1, player2)
-		puts "> who won the point? #{player1.fullname} (1) or #{player2.fullname} (2)"
+		print "Who won the point? #{player1.fullname} (1) or #{player2.fullname} (2)\n> "
 	end
 	
   def set_game_flags
-    @game_over, @set_over = false
+    @game_over = @set_over = false
   end
+
 	def display_score(player1, player2)
-		if @game_over 
+		if @game_over
 			puts "#{player1.fullname}: #{player1.games_sets}"
 			puts "#{player2.fullname}: #{player2.games_sets}"
+			puts "#{@server.fullname} to serve."
 		  set_game_flags
 		else
 			display_points(player1, player2)
@@ -221,19 +227,19 @@ def play_point(player1, player2)
 
 end
 
-puts "Player 1 first name: "
+puts "MARGO'S TENNIS SCORING"
+print "Player 1 first name:  "
 p1_fname = gets.chomp
-puts "Player 1 surname: "
+print "Player 1 last name:   "
 p1_lname = gets.chomp
-puts "Player 2 first name: "
+print "Player 2 first name:  "
 p2_fname = gets.chomp
-puts "Player 2 surname: "
+print "Player 2 last name:   "
 p2_lname = gets.chomp
 player1 = Player.new(p1_fname, p1_lname)
 player2 = Player.new(p2_fname, p2_lname)
-puts "Who won the toss, Player 1 or Player 2?"
-server = gets.chomp
-server == '1' ? player1 : player2
+print "Who won the toss, Player (1) or Player (2)?\n> "
+server = gets.chomp == '1' ? player1 : player2
 final = Match.new(server)
 
 final.play(player1,player2)
