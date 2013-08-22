@@ -106,7 +106,7 @@ class Match
     if @point_winning_player.points > point_losing_player.points
       @point_winning_player.points += 1
     else
-      @point_winning_player.points -= 1
+      point_losing_player.points -= 1
     end
 	end
 	
