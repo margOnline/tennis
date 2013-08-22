@@ -2,6 +2,7 @@
 # v.2 - incorporates game and set scoring as well as point scoring
 # 2 classes - Player holds play info and scores; Match contains methods to handle the scoring
 #require 'byebug'
+#another comment to commit
 class Player
 	attr_accessor :points, :games, :sets
 	def initialize(fname,lname)
