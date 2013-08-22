@@ -34,12 +34,11 @@ class Match
 
 	def initialize(server)
     @server = server
-		@game_over, @set_over, @match_over = false
+		@game_over = @set_over = @match_over = false
 	end
 	
 	def play(player1, player2)
 		display_points(player1, player2)
-    # byebug
 		until match_over?(player1, player2)
 			break_point?(player1, player2)
 			@point_winning_player = play_point(player1, player2)
@@ -115,15 +114,19 @@ def play_point(player1, player2)
       point_losing_player.points -= 1
     end
 	end
+
 	def game_over(player1,player2,point_winning_player)
 		@game_over = true
 		player1.points = player2.points = 0
 		@point_winning_player.games += 1
-		
+		determine_next_step(player1,player2,point_winning_player)
 		#code to go here to change the role of the players (server/receiver) 
 		#for enhanced score display purposes
-		
+	end
+
+	def determine_next_step(player1,player2,point_winning_player)
 		if tiebreak?(player1, player2)
+			display_score(player1, player2)
 			introduce_tiebreak
 			play_tiebreak(player1, player2, @point_winning_player)
 		end
@@ -132,13 +135,17 @@ def play_point(player1, player2)
 			@set_over = true
 			player1.points = player2.points = player1.games = player2.games = 0
 			@point_winning_player.sets += 1
+			if not match_over?(player1, player2)
+				intro_new_set
+			end
 		end
 
 		if match_over?(player1, player2)
 			match_over(player1, player2,@point_winning_player)
 		end
-		
 	end
+
+
 	def tiebreak?(player1, player2)
 		 player1.games == 6 && player2.games == 6 
 	end
@@ -150,6 +157,8 @@ def play_point(player1, player2)
 			display_tiebreak_score(player1, player2)
 		end
 		@point_winning_player.games += 1
+		@game_over = true
+		display_score(player1,player2)
 	end
 	
 	def set?(player1, player2)
@@ -196,6 +205,12 @@ def play_point(player1, player2)
 	def display_tiebreak_score(player1, player2)
 		puts "#{player1.fullname}: #{player1.points}"
 		puts "#{player2.fullname}: #{player2.points}"
+	end
+
+	def intro_new_set
+		puts '------------------------------'
+		puts 'NEW SET: to serve'
+		puts '------------------------------'
 	end
 
 	def introduce_tiebreak
