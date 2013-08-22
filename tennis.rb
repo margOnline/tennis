@@ -32,7 +32,7 @@ class Match
 
 	def initialize(server)
     @server = server
-		@game_over = @set_over = @match_over = false
+		@game_over, @set_over, @match_over = false
 	end
 	
 	def play(player1, player2)
@@ -176,12 +176,11 @@ class Match
 	end 
 	
 	def prompt(player1, player2)
-		puts "> who won the point? #{player1.fullname} 1 or #{player2.fullname} 2"
+		puts "> who won the point? #{player1.fullname} (1) or #{player2.fullname} (2)"
 	end
 	
   def set_game_flags
-    @game_over = false
-    @set_over = false
+    @game_over, @set_over = false
   end
 
 	def display_score(player1, player2)
