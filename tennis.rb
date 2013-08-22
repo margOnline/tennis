@@ -148,12 +148,12 @@ class Match
 	end
 	
 	def play_tiebreak(player1, player2, point_winning_player)
-		until ((player1.points >= 7 || player2.points >= 7) && ((player1.points - player2.points).abs == 2))
+		until (player1.points >= 7 || player2.points >= 7) && ((player1.points - player2.points).abs >= 2)
 			play_point(player1, player2)
 			increment_score(@point_winning_player)
 			display_tiebreak_score(player1, player2)
 		end
-		@point_winning_player.games += 0
+		@point_winning_player.games += 1
 	end
 	
 	def set?(player1, player2)
