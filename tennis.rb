@@ -124,6 +124,7 @@ def play_point(player1, player2)
 		#for enhanced score display purposes
 		
 		if tiebreak?(player1, player2)
+			introduce_tiebreak
 			play_tiebreak(player1, player2, @point_winning_player)
 		end
 
@@ -195,6 +196,12 @@ def play_point(player1, player2)
 	def display_tiebreak_score(player1, player2)
 		puts "#{player1.fullname}: #{player1.points}"
 		puts "#{player2.fullname}: #{player2.points}"
+	end
+
+	def introduce_tiebreak
+		puts '------------------------------'
+		puts 'A tiebreak will now be played.'
+		puts '------------------------------'
 	end
 
 end
