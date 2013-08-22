@@ -36,6 +36,7 @@ class Match
     @server = server
 		@game_over = @set_over = @match_over = false
 		puts "Let the match begin!"
+		puts "#{@server.fullname} to serve first."
 	end
 	
 	def play(player1, player2)
@@ -190,11 +191,12 @@ def play_point(player1, player2)
   def set_game_flags
     @game_over = @set_over = false
   end
+
 	def display_score(player1, player2)
-		if @game_over 
+		if @game_over
 			puts "#{player1.fullname}: #{player1.games_sets}"
 			puts "#{player2.fullname}: #{player2.games_sets}"
-			puts "#{@server.fullname} to serve..."
+			puts "#{@server.fullname} to serve."
 		  set_game_flags
 		else
 			display_points(player1, player2)
