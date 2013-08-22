@@ -1,8 +1,9 @@
-# v.2 - incorporates refactoring suggestions and naming conventions suggested by Evegeny, 21 Aug 2013
-# v.2 - incorporates game and set scoring as well as point scoring
+# v.2 - incorporates refactoring suggestions and naming conventions suggested by Evegeny, 21 Aug 2013:
+# 			changed the score array to a constant in Match class
+#				to keep track of the player who won the point, used a reference to one of the player instances
+# v.1 - incorporates game and set scoring as well as point scoring
 # 2 classes - Player holds play info and scores; Match contains methods to handle the scoring
-#require 'byebug'
-#another comment to commit
+
 class Player
 	attr_accessor :points, :games, :sets
 	def initialize(fname,lname)
@@ -46,8 +47,9 @@ class Match
 			display_score(player1, player2)
 		end
 	end
-	
-	def play_point(player1, player2)
+
+private
+def play_point(player1, player2)
 		prompt(player1, player2)
 		point_winner = gets.chomp
     @point_winning_player = point_winner == '1' ? player1 : player2
@@ -86,20 +88,23 @@ class Match
 	def deuce?(player1,player2)
 		player1.points == 4 && player2.points == 4
 	end
+	def game?(player1, player2)
+		if (player1.points == 4 || player2.points == 4)
+			(player1.points - player2.points).abs >= 2 ? true : false
+		elsif (player1.points == 5 || player2.points == 5)
+			(player1.points - player2.points).abs >= 2 ? true : false
+		else
+			return false
+		end
+	end
 
 	def is_30_40(player1,player2,point_winning_player)
-     point_losing_player = player1 == @point_winning_player ? player2 : player1
-     #byebug
-     # puts "point_losing_player = #{point_losing_player.fullname} with #{point_losing_player.points} points and 
-     # point_winning_player = #{point_winning_player.fullname} with #{point_winning_player.points} points"
+    point_losing_player = player1 == @point_winning_player ? player2 : player1
 		if @point_winning_player.points > point_losing_player.points
-					point_winning_player.points = 5 
-					#byebug
+			point_winning_player.points = 5 
 		else
 			@point_winning_player.points += 1
 		end
-		# puts "point_losing_player = #{point_losing_player.fullname} with #{point_losing_player.points} points and 
-  #    point_winning_player = #{point_winning_player.fullname} with #{point_winning_player.points} points"
 	end
 	
 	def is_advantage(player1,player2,point_winning_player)
@@ -110,17 +115,6 @@ class Match
       point_losing_player.points -= 1
     end
 	end
-	
-	def game?(player1, player2)
-		if (player1.points == 4 || player2.points == 4)
-			(player1.points - player2.points).abs >= 2 ? true : false
-		elsif (player1.points == 5 || player2.points == 5)
-			(player1.points - player2.points).abs >= 2 ? true : false
-		else
-			return false
-		end
-	end
-	
 	def game_over(player1,player2,point_winning_player)
 		@game_over = true
 		player1.points = player2.points = 0
@@ -183,7 +177,6 @@ class Match
   def set_game_flags
     @game_over, @set_over = false
   end
-
 	def display_score(player1, player2)
 		if @game_over 
 			puts "#{player1.fullname}: #{player1.games_sets}"
@@ -203,6 +196,7 @@ class Match
 		puts "#{player1.fullname}: #{player1.points}"
 		puts "#{player2.fullname}: #{player2.points}"
 	end
+
 end
 
 puts "Player 1 first name: "
